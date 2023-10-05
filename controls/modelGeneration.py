@@ -40,7 +40,7 @@ def get_airfoil_points():
         lines=file_content.split("\n")
         for line in lines[1:]:
             if line:
-                x, y = map(float,line.split())
+                x,y = map(float,line.split())
                 airfoil_points.append((x,y))
     
     return airfoil_points
