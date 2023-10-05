@@ -35,21 +35,13 @@ def get_airfoil_points():
     
     airfoil_points=[]
     
-    if airfoil_file:
-        with open(airfoil_file,'r')as file:
-            skip_first_line=True
-            for line in file:
-                if skip_first_line:
-                    skip_first_line = False
-                    continue
-                values=line.strip().split()
-                if len(values)>=2:
-                    x=float(values[0])
-                    y=float(values[1])
-                    airfoil_points.append((x,y))
-        if not airfoil_points:
-            global_airfoil_file = None
-            print("Something is wrong with the file.")
+    if airfoil_file is not None:
+        file_content = uploaded_file.read().decode()
+        lines=file_content.split("\n")
+        for line in lines[1:]:
+            if line:
+                x, y = map(float,line.split())
+                airfoil_points.append((x,y))
     
     return airfoil_points
     """
