@@ -44,7 +44,7 @@ def get_airfoil_points():
                 airfoil_points.append((x,y))
     
     return airfoil_points
-    """
+
 def scale_airfoil_points(airfoil_points,chord,parameters):
 
     center_x=sum(x for x,_ in airfoil_points)/len(airfoil_points)
