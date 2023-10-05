@@ -29,7 +29,8 @@ def get_airfoil_points():
     global global_airfoil_file_path
     
     if global_airfoil_file_path is None:
-        global_airfoil_file_path=filedialog.askopenfilename(filetypes=[("Dat Files","*.dat")])
+        #global_airfoil_file_path=filedialog.askopenfilename(filetypes=[("Dat Files","*.dat")])
+        global_airfoil_file_path = st.file_uploader("Add dat file!")
     
     airfoil_file_path= global_airfoil_file_path
     
