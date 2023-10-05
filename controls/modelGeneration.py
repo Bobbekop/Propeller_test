@@ -25,12 +25,18 @@ def generate_hub(parameters):
     return hub_wp
 
 def get_airfoil_points():
+    uploaded_file = st.file_uploader("Add .dat file !")
+    if uploaded_file:
+        for line in uploaded_file:
+            st.write(line)
+            
+"""
+def get_airfoil_points():
     
     global global_airfoil_file_path
     
     if global_airfoil_file_path is None:
-        #global_airfoil_file_path=filedialog.askopenfilename(filetypes=[("Dat Files","*.dat")])
-        global_airfoil_file_path = st.file_uploader("Add dat file!")
+        global_airfoil_file_path=filedialog.askopenfilename(filetypes=[("Dat Files","*.dat")])
     
     airfoil_file_path= global_airfoil_file_path
     
@@ -53,7 +59,7 @@ def get_airfoil_points():
             print("Something is wrong with the file.")
     
     return airfoil_points
-
+    """
 def scale_airfoil_points(airfoil_points,chord,parameters):
 
     center_x=sum(x for x,_ in airfoil_points)/len(airfoil_points)
