@@ -11,7 +11,7 @@ def ui():
     
     tab1, tab2, tab3 = st.tabs(["Parameters", "Camera", "File"])
     with tab1:
-        uploaded_file = st.file_uploader("Add .dat file !",type=['dat'])
+        global_airfoil_file_path = st.file_uploader("Add .dat file !",type=['dat'])
         col1, col2, col3 = st.columns(3)
         model_parameters = parameter_controls()
     with tab2:
