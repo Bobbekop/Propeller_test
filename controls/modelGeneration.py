@@ -4,7 +4,7 @@ import math
 import tkinter as tk
 from tkinter import filedialog
 
-global_airfoil_file_path = None
+global_airfoil_file = None
 
 def generate_hub(parameters):
     
@@ -26,17 +26,17 @@ def generate_hub(parameters):
 
 def get_airfoil_points():
     
-    global global_airfoil_file_path
+    global global_airfoil_file
     """
     if global_airfoil_file_path is None:
         global_airfoil_file_path=filedialog.askopenfilename(filetypes=[("Dat Files","*.dat")])
     """
-    airfoil_file_path= global_airfoil_file_path
+    airfoil_file= global_airfoil_file
     
     airfoil_points=[]
     
-    if airfoil_file_path:
-        with open(airfoil_file_path,'r')as file:
+    if airfoil_file:
+        with open(airfoil_file,'r')as file:
             skip_first_line=True
             for line in file:
                 if skip_first_line:
@@ -48,7 +48,7 @@ def get_airfoil_points():
                     y=float(values[1])
                     airfoil_points.append((x,y))
         if not airfoil_points:
-            global_airfoil_file_path = None
+            global_airfoil_file = None
             print("Something is wrong with the file.")
     
     return airfoil_points
