@@ -26,7 +26,7 @@ def generate_hub(parameters):
 
 def get_airfoil_points():
     
-    global global_airfoil_file
+    
     """
     if global_airfoil_file_path is None:
         global_airfoil_file_path=filedialog.askopenfilename(filetypes=[("Dat Files","*.dat")])
