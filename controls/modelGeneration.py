@@ -24,20 +24,18 @@ def generate_hub(parameters):
     
     return hub_wp
 
-def get_airfoil_points():
-    
-    
+def get_airfoil_points(global_airfoil_file):
+        
     """
     if global_airfoil_file_path is None:
         global_airfoil_file_path=filedialog.askopenfilename(filetypes=[("Dat Files","*.dat")])
     """
     airfoil_file= global_airfoil_file
-    
-    airfoil_points=[]
-    
+      
     if airfoil_file is not None:
-        file_content = uploaded_file.read().decode()
+        file_content = airfoil_file.read().decode()
         lines=file_content.split("\n")
+        airfoil_points=[]
         for line in lines[1:]:
             if line:
                 x,y = map(float,line.split())
@@ -73,7 +71,7 @@ def elliptical_chord(r,parameters):
 
 def generate_blade(parameters):
 
-    airfoil_points = get_airfoil_points()
+    airfoil_points = get_airfoil_points(global_airfoil_file)
     
     base_wp = cq.Workplane("XY")
     
