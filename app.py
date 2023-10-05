@@ -7,8 +7,6 @@ from controls import (
     camera_controls
 )
 
-global global_airfoil_file = None
-
 def ui():
     
     tab1, tab2, tab3 = st.tabs(["Parameters", "Camera", "File"])
