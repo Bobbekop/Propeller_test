@@ -23,6 +23,62 @@ def generate_hub(parameters):
     
     return hub_wp
 
+def generate_counterweighted_hub(parameters):
+    hub_wp = (cq.Workplane("XY")
+        .cylinder(
+            parameters['hub_height'],
+            parameters['hub_diam']/2))
+
+    counterweight_wp = (cq.Workplane("XY")
+        .box(
+            parameters['hub_diam'],
+            parameters['hub_diam'],
+            parameters['hub_height'])
+        .translate((-parameters['hub_diam']/2,0,0)))
+        
+    counterweighted_hub_wp = counterweight_wp.union(hub_wp,clean=True)
+
+    counterweighted_hub_wp = (counterweighted_hub_wp
+        .faces(">Z")
+        .workplane()
+        .hole(
+            parameters['hub_hole_diam'])
+        .faces(">Z")
+        .workplane()
+        .hole(parameters['hub_hole_chamf_diam'],parameters['hub_hole_up_chamf_depth'])
+        .faces("<Z")
+        .workplane()
+        .circle(parameters['hub_hole_chamf_diam']/2)
+        .cutBlind(-parameters['hub_hole_low_chamf_depth']))
+
+    counterweighted_hub_wp = (cq.Workplane("XY")
+        .add(counterweighted_hub_wp)
+        .faces("<X")
+        .workplane()
+        .hole(parameters['bolt_mm'],parameters['hub_diam']/2))
+
+    counterweighted_hub_wp = (cq.Workplane("XY")
+        .add(counterweighted_hub_wp)
+        .faces(">Z")
+        .translate((-0.1*parameters['hub_diam'],-parameters['hub_diam']/2,0))
+        .rect(parameters['bolt_top_mm'],parameters['bolt_top_width_mm']+parameters['hub_diam'])
+        .cutBlind(-parameters['hub_height']))
+
+    counterweighted_hub_wp = (cq.Workplane("XY")
+        .add(counterweighted_hub_wp)
+        .faces(">Y")
+        .translate((-parameters['hub_diam']/4,-parameters['hub_diam'],-parameters['bolt_mm']/2))
+        .rect(parameters['hub_diam']/2,parameters['hub_diam'])
+        .cutBlind(parameters['bolt_mm']))
+
+    counterweighted_hub_wp = (cq.Workplane("XY")
+        .add(counterweighted_hub_wp)
+        .edges("|Z and <X")
+        .fillet(parameters['hub_diam']/5)
+        .translate((0,0,parameters['hub_height']/2)))
+    
+    return counterweighted_hub_wp
+
 def get_airfoil_points():
     """
     global global_airfoil_file_path
