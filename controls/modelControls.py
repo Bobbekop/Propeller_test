@@ -3,8 +3,6 @@ import cadquery as cq
 import os
 import time
 from .modelGeneration import (
-    generate_hub,
-    generate_blade,
     generate_propeller
 )
 
@@ -13,9 +11,7 @@ PREVIEW_NAME = 'Propeller_preview.svg'
 
 def generate_model(parameters):
     
-    hub_wp=generate_hub(parameters)
-    blade_wp = generate_blade(parameters)
-    propeller = generate_propeller(hub_wp,blade_wp,parameters)
+    propeller = generate_propeller(parameters)
     
     return propeller
 
