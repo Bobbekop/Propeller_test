@@ -23,7 +23,7 @@ def parameter_controls():
            hub_hole_chamf_diam=st.number_input("Hub Chamfer Diameter",min_value=0.01,value=0.01,max_value=50.0,step=0.25,format="%.2f")
            hub_hole_up_chamf_depth=st.number_input("Hub Chamfer Upper Depth",min_value=0.01,value=0.01,max_value=50.0,step=0.25,format="%.2f")
            hub_hole_low_chamf_depth=st.number_input("Hub Chamfer Lower Depth",min_value=0.01,value=0.01,max_value=50.0,step=0.25,format="%.2f")
-        with col3:
+       with col3:
            bolt_mm=st.number_input("Bolt Size mm",min_value=3,value=5,max_value=8)
            bolt_top_mm=st.number_input("Bolt Top thickness mm",min_value=2.0,value=3.5,max_value=8.0,step=0.1,format="%.1f")
            bolt_top_width_mm=st.number_input("Bolt Top Width mm",min_value=3.0,value=7.9,max_value=10.0,step=0.1,format="%.1f")
