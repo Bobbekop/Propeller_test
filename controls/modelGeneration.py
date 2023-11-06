@@ -211,9 +211,10 @@ def generate_propeller(parameters):
         y_pos = (hub_radius-(hub_radius*0.0))*math.sin(math.radians(angle))
         
         blade = (blade_wp
-                 .rotate((0, 0, 0), (0, 0, 1), 180+angle)
+                 .rotate((0, 0, 0), (0, 0, 1), 180)
                  .rotate((0, 0, 0), (0, 1, 0), 90)
                  .rotate((0, 0, 0), (1, 0, 0), 90)
+                 .rotate((0, 0, 0), (0, 0, 1), angle)
                  .translate((x_pos,y_pos,parameters['hub_height']/2)))
         
         propeller = propeller.union(blade)
