@@ -10,13 +10,11 @@ EXPORT_NAME = 'Propeller_model'
 PREVIEW_NAME = 'Propeller_preview.svg'
 
 def generate_model(parameters):
-    
     propeller = generate_propeller(parameters)
     
     return propeller
 
 def generate_preview(model, image_name, color1, color2, camera):
-    
     hex_1 = color1.lstrip('#')
     rgb_1 = tuple(int(hex_1[i:i+2], 16) for i in (0, 2, 4))
 
@@ -31,7 +29,6 @@ def generate_preview(model, image_name, color1, color2, camera):
         "hiddenColor": rgb_2})
     
 def model_controls(parameters,camera,color1,color2,file_controls):
-    
     start = time.time()
     
     with st.spinner('Generating Model..'):
