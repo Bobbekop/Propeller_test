@@ -2,10 +2,10 @@ import streamlit as st
 
 def camera_controls():
     
-        axis1 = 0 
-        axis2 = 0
-        axis3 = -1
-        focus = 50
+    axis1 = 0 
+    axis2 = 0
+    axis3 = -1
+    focus = 50
     
     """
     col1, col2, col3 = st.columns(3)
