@@ -13,7 +13,7 @@ from controls import (
 
 def ui():
 
-    camera_control={axis1==0,axis2==0,axis3==-1,focus==50}
+    camera_control={axis1=0,axis2=0,axis3=-1,focus=50}
     
     tab1, tab2 = st.tabs(["Parameters", "File"])
     with tab1:
