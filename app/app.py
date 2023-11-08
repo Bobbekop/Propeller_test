@@ -40,7 +40,7 @@ def ui_model_controls(model_parameters, file_controls):
     model_controls(model_parameters,color,render,file_controls)
 
 def start_app():
-    model_parameters, file_controls = make_tabs()
+    add_model_layer_button,model_parameters, file_controls = make_tabs()
     st.divider()
     ui_model_controls(model_parameters, file_controls)
 
