@@ -14,7 +14,7 @@ def generate_model(parameters):
     model = generate_propeller(parameters)
     scene = cq.Workplane("XY").union(model)
     
-    return model
+    return scene
 
 def generate_stl_preview(color, render):
     with open("js/three.min.js", "r") as js_file:
