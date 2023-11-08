@@ -195,6 +195,7 @@ def generate_blade(parameters):
     return blade_wp
 
 def generate_propeller(parameters):
+
     if parameters['num_of_blades'] == 1:
         counterweighted_hub_wp=generate_counterweighted_hub(parameters)
         propeller = cq.Workplane("XY").add(counterweighted_hub_wp)
@@ -218,5 +219,8 @@ def generate_propeller(parameters):
                  .translate((x_pos,y_pos,parameters['hub_height']/2)))
         
         propeller = propeller.union(blade)
-    
-    return propeller
+
+    #return propeller
+
+    result = cadquery.Workplane("front").box(2.0, 2.0, 0.5)
+    return result
