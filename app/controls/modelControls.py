@@ -7,8 +7,8 @@ from .modelGeneration import (
     generate_propeller
 )
 
-EXPORT_NAME = 'Propeller_model'
-PREVIEW_NAME = 'Propeller_preview.svg'
+EXPORT_NAME = 'model'
+PREVIEW_NAME = 'preview.svg'
 
 def generate_model(parameters):
     model = generate_propeller(parameters)
