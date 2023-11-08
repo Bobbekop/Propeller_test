@@ -33,16 +33,11 @@ def ui_model_controls(model_parameters, file_controls):
     with col1:
         generate_button = st.button('Generate Model')
     with col2:
-        color1 = st.color_picker('Model Color', '#E06600', label_visibility="collapsed")
+        color = st.color_picker('Model Color', '#E06600', label_visibility="collapsed")
     with col3:
         render = st.selectbox("Render", ["material", "wireframe"], label_visibility="collapsed")
 
-    model_controls(
-        model_parameters,
-        color1,
-        render,
-        file_controls
-    )
+    model_controls(model_parameters,color,render,file_controls)
 
 def start_app():
     model_parameters, file_controls = make_tabs()
