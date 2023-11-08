@@ -8,7 +8,8 @@ from controls import (
     sidebar, 
     parameter_controls, 
     model_controls,
-    file_controls
+    file_controls,
+    code_view
 )
 
 def make_tabs():
@@ -19,9 +20,9 @@ def make_tabs():
     with tab_file_controls:
         ui_file_controls = file_controls()
     with tab_layer:
-        add_button, dupe = make_parameter_controls_layers()
+        add_button, dupe = make_parameter_controls_layers()    
      with tab_code:
-        make_code_view(parameters, st.session_state['models'])
+        code_view(model_parameters, st.session_state['models'])
         
     return add_button, model_parameters, ui_file_controls
 
@@ -43,10 +44,22 @@ def ui_model_controls(model_parameters, ui_file_controls):
 
     model_controls(model_parameters,color,render,ui_file_controls)
 
+def handle_add_button_click(add_model_layer_button, model_parameters):
+    if add_model_layer_button:
+        # fix layer name dupes
+        if len(st.session_state['models']) > 0:
+            for model in st.session_state['models']:
+                if model_parameters['layer_name']==model['layer_name']:
+                    model_parameters['layer_name'] += " copy"
+
+        st.session_state['models'].append(model_parameters)
+        st.experimental_rerun()
+
 def start_app():
-    model_parameters, ui_file_controls = make_tabs()
+    add_model_layer_button, model_parameters, ui_file_controls = make_tabs()
     st.divider()
     ui_model_controls(model_parameters, ui_file_controls)
+    handle_add_button_click(add_model_layer_button, model_parameters)
 
 def clean_up_static_files():
     files = glob.glob("app/static/model_*.stl")
