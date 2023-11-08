@@ -54,7 +54,7 @@ def model_controls(parameters,color,render,file_controls):
     with st.spinner('Generating Model..'):
         download_name = file_controls['Name']
         export_type = file_controls['Type'] 
-        model = generate_model(parameters)
+        model = generate_propeller(parameters)
 
         cq.exporters.export(model,f'{EXPORT_NAME}.{export_type}')
         
