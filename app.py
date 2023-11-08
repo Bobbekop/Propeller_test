@@ -9,13 +9,11 @@ from controls import (
 
 def ui():
     
-    tab1, tab2, tab3 = st.tabs(["Parameters", "Camera", "File"])
+    tab1, tab2 = st.tabs(["Parameters", "File"])
     with tab1:
         col1, col2, col3 = st.columns(3)
         model_parameters = parameter_controls()
     with tab2:
-        camera_control = camera_controls()
-    with tab3:
         file_control = file_controls()
 
     col1, col2, col3= st.columns(3)
