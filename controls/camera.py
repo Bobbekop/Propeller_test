@@ -1,6 +1,11 @@
 import streamlit as st
 
 def camera_controls():
+    axis1=0
+    axis2=0
+    axis3=-1
+    focus=50
+    
     """
     col1, col2, col3 = st.columns(3)
     
@@ -14,8 +19,8 @@ def camera_controls():
     focus = st.number_input("Focus",step=1, value=50)
     """
     return {
-        'axis1':axis1 == 0, 
-        'axis2':axis2 == 0, 
-        'axis3':axis3 == -1, 
-        'focus':focus == 50
+        'axis1':axis1, 
+        'axis2':axis2, 
+        'axis3':axis3, 
+        'focus':focus
     }
