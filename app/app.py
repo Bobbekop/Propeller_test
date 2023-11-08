@@ -8,12 +8,13 @@ from controls import (
     sidebar, 
     parameter_controls, 
     model_controls,
-    file_controls
+    file_controls,
+    camera_controls
 )
 
 def ui():
 
-    camera_control={axis1=0,axis2=0,axis3=-1,focus=50}
+    camera_control=camera_controls()
     
     tab1, tab2 = st.tabs(["Parameters", "File"])
     with tab1:
