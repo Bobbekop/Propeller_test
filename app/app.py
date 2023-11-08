@@ -17,9 +17,9 @@ def make_tabs():
     with tab_parameters:
         model_parameters = parameter_controls()
     with tab_file_controls:
-        file_controls = file_controls()
+        ui_file_controls = file_controls()
 
-    return model_parameters, file_controls
+    return model_parameters, ui_file_controls
 
 def initialize_session():
     if 'models' not in st.session_state:
