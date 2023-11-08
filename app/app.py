@@ -24,9 +24,6 @@ def make_tabs():
         add_button, dupe = parameter_controls_layers()    
     
     parameters = model_parameters | dupe
-
-    with tab_code:
-        code_view(parameters, st.session_state['models'])
     
     return add_button, parameters, ui_file_controls
 
