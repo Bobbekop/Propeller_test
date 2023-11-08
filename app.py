@@ -27,7 +27,7 @@ def ui():
     if render:
         model_controls(
             model_parameters, 
-            camera_control = camera_controls(), 
+            camera_control, 
             color1, 
             color2, 
             file_control
