@@ -1,15 +1,19 @@
 import streamlit as st
+from uuid import uuid4
+import glob
+import time
+from datetime import datetime, date
+from pathlib import Path
 from controls import (
     sidebar, 
     parameter_controls, 
     model_controls,
-    file_controls,
-    camera_controls
+    file_controls
 )
 
 def ui():
 
-    camera_control=camera_controls()
+    camera_control={axis1==0,axis2==0,axis3==-1,focus==50}
     
     tab1, tab2 = st.tabs(["Parameters", "File"])
     with tab1:
