@@ -28,7 +28,7 @@ def initialize_session():
     if "session_id" not in st.session_state:
         st.session_state['session_id'] = uuid4()
 
-def model_controls(model_parameters, file_controls):
+def ui_model_controls(model_parameters, file_controls):
     col1, col2, col3 = st.columns(3)
     with col1:
         generate_button = st.button('Generate Model')
@@ -37,7 +37,7 @@ def model_controls(model_parameters, file_controls):
     with col3:
         render = st.selectbox("Render", ["material", "wireframe"], label_visibility="collapsed")
 
-    make_model_controls(
+    model_controls(
         model_parameters,
         color1,
         render,
@@ -47,7 +47,7 @@ def model_controls(model_parameters, file_controls):
 def make_app():
     model_parameters, file_controls = make_tabs()
     st.divider()
-    model_controls(model_parameters, file_controls)
+    ui_model_controls(model_parameters, file_controls)
 
 def clean_up_static_files():
     files = glob.glob("app/static/model_*.stl")
