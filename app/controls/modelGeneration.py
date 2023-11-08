@@ -222,5 +222,5 @@ def generate_propeller(parameters):
 
     #return propeller
 
-    result = cadquery.Workplane("front").box(2.0, 2.0, 0.5)
+    result = cq.Workplane("front").box(2.0, 2.0, 0.5)
     return result
