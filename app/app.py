@@ -12,14 +12,18 @@ from controls import (
 )
 
 def make_tabs():
-    tab_parameters, tab_file_controls = st.tabs(["Parameters", "File"])
+    tab_parameters, tab_file_controls,tab_layer,tab_code= st.tabs(["Parameters", "File","Layers","Code"])
     
     with tab_parameters:
         model_parameters = parameter_controls()
     with tab_file_controls:
         ui_file_controls = file_controls()
-
-    return model_parameters, ui_file_controls
+    with tab_layer:
+        add_button, dupe = make_parameter_controls_layers()
+     with tab_code:
+        make_code_view(parameters, st.session_state['models'])
+        
+    return add_button, model_parameters, ui_file_controls
 
 def initialize_session():
     if 'models' not in st.session_state:
