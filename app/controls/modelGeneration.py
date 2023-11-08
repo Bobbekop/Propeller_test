@@ -216,4 +216,7 @@ def generate_propeller(parameters):
         
         propeller = propeller.union(blade)
 
-    return propeller
+    #return propeller
+    return cq.Workplane("front").box(2.0, 2.0, 0.5)
+
+
