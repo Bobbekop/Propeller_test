@@ -44,7 +44,7 @@ def ui_model_controls(model_parameters, file_controls):
         file_controls
     )
 
-def make_app():
+def start_app():
     model_parameters, file_controls = make_tabs()
     st.divider()
     ui_model_controls(model_parameters, file_controls)
@@ -66,6 +66,6 @@ if __name__ == "__main__":
         page_icon="🛬"
     )
     initialize_session()
-    make_app()
-    make_sidebar()
+    start_app()
+    sidebar()
     clean_up_static_files()
