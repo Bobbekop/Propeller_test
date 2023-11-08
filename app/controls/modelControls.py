@@ -10,11 +10,24 @@ from .modelGeneration import (
 EXPORT_NAME = 'model'
 PREVIEW_NAME = 'preview.svg'
 
-def generate_model(parameters):
+def make_model(parameters):
     model = generate_propeller(parameters)
+        
+    return model
+
+def generate_model(parameters):
+    layers = st.session_state['models']
+    model = make_model(parameters)
+
     scene = cq.Workplane("XY").union(model)
     
-    return model
+    if layers and len(layers) > 0:
+        for layer_params in layers:
+            if layer_params['layer_display']:
+                layer_model = make_model(layer_params)
+                scene = scene.union(layer_model)
+
+    return scene
 
 def generate_stl_preview(color, render):
     with open("js/three.min.js", "r") as js_file:
@@ -54,9 +67,11 @@ def model_controls(parameters,color,render,file_controls):
     with st.spinner('Generating Model..'):
         download_name = file_controls['Name']
         export_type = file_controls['Type'] 
-        model = generate_propeller(parameters)
+        session_id = st.session_state['session_id']
+        model = generate_model(parameters)
 
         cq.exporters.export(model,f'{EXPORT_NAME}.{export_type}')
+        cq.exporters.export(model,'app/static/'+f'{EXPORT_NAME}_{session_id}.stl')
         
         end = time.time()
 
