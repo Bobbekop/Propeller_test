@@ -1,7 +1,9 @@
 
 import streamlit as st
 import cadquery as cq
-from cqterrain import obelisk
+from .modelGeneration import (
+    generate_propeller
+)
 
 def layers_table():
     st.subheader("Layers")
