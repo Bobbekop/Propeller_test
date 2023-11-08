@@ -7,6 +7,7 @@ from pathlib import Path
 from controls import (
     sidebar, 
     parameter_controls, 
+    parameter_controls_layers,
     model_controls,
     file_controls,
     code_view
