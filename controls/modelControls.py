@@ -27,8 +27,8 @@ def generate_preview(model, image_name, color1, color2, camera):
         "focus": camera['focus'],
         "strokeWidth": 0.5,
         "strokeColor": rgb_1,
-        "hiddenColor": rgb_2})
-        "fillColor": rgb_1
+        "hiddenColor": rgb_2,
+        "fillColor": rgb_1})
     
 def model_controls(parameters,camera,color1,color2,file_controls):
     start = time.time()
