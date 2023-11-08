@@ -8,6 +8,8 @@ from controls import (
 )
 
 def ui():
+
+    camera_control=camera_controls()
     
     tab1, tab2 = st.tabs(["Parameters", "File"])
     with tab1:
