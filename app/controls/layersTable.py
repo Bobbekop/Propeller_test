@@ -81,7 +81,7 @@ def __delete_layer_event(index, name=None):
         st.session_state['models'].pop(index)
 
 def __make_model_layer(parameters):
-    model = 
+    model = generate_propeller(parameters)
     return model
 
 def __generate_preview_image(model, image_name, color1='#E06600', color2='#985926'):
