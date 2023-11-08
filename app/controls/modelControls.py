@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import cadquery as cq
 import os
 import time
@@ -10,27 +11,44 @@ EXPORT_NAME = 'Propeller_model'
 PREVIEW_NAME = 'Propeller_preview.svg'
 
 def generate_model(parameters):
-    propeller = generate_propeller(parameters)
+    model = generate_propeller(parameters)
+    scene = cq.Workplane("XY").union(model)
     
-    return propeller
+    return scene
 
-def generate_preview(model, image_name, color1, color2, camera):
-    hex_1 = color1.lstrip('#')
-    rgb_1 = tuple(int(hex_1[i:i+2], 16) for i in (0, 2, 4))
+def generate_stl_preview(color, render):
+    with open("js/three.min.js", "r") as js_file:
+        three_js = js_file.read()
 
-    hex_2 = color2.lstrip('#')
-    rgb_2 = tuple(int(hex_2[i:i+2], 16) for i in (0, 2, 4))
-    
-    cq.exporters.export(model, image_name, opt={
-        "projectionDir": (camera['axis1'], camera['axis2'], camera['axis3']),
-        "showAxes": True,
-        "focus": camera['focus'],
-        "strokeWidth": 0.5,
-        "strokeColor": rgb_1,
-        "hiddenColor": rgb_2,
-        "fillColor": rgb_1})
-    
-def model_controls(parameters,camera,color1,color2,file_controls):
+    with open("js/STLLoader.js", "r") as js_file:
+        stl_loader = js_file.read()
+
+    with open("js/OrbitControls.js", "r") as js_file:
+        orbital_controls = js_file.read()
+
+    with open("js/stl-viewer.js", "r") as js_file:
+        stl_viewer_component = (
+            js_file.read()
+            .replace('{__REPLACE_COLOR__}',f'0x{color[1:]}')
+            .replace('{__REPLACE_MATERIAL__}',render)
+        )
+        
+    session_id = st.session_state['session_id']
+    components.html(
+        r'<div style="height:500px">'+
+        r'<script>'+
+        three_js+' '+
+        stl_loader+' '+
+        orbital_controls+' '+
+        'console.log(\'frizzle\');'+
+        stl_viewer_component+' '+
+        r'</script>'+
+        r'<stl-viewer model="./app/static/model_'+str(session_id)+'.stl?cache='+str(time.time())+r'"></stl-viewer>'+
+        r'</div>',
+        height = 500
+    )
+
+def model_controls(parameters,color,render,file_controls):
     start = time.time()
     
     with st.spinner('Generating Model..'):
@@ -39,12 +57,11 @@ def model_controls(parameters,camera,color1,color2,file_controls):
         model = generate_model(parameters)
 
         cq.exporters.export(model,f'{EXPORT_NAME}.{export_type}')
-        generate_preview(model, PREVIEW_NAME, color1, color2, camera)
-
+        cq.exporters.export(model,'app/static/'+f'{EXPORT_NAME}_{session_id}.stl')
+        
         end = time.time()
 
-        st.write("Preview:")
-        st.image(PREVIEW_NAME)
+        generate_stl_preview(color, render)
 
         if f'{EXPORT_NAME}.{export_type}' not in os.listdir():
             st.error('The program was not able to generate the mesh.', icon="🚨")
