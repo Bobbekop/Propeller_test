@@ -14,7 +14,7 @@ from controls import (
 )
 
 def make_tabs():
-    tab_parameters, tab_file_controls,tab_layer,tab_code= st.tabs(["Parameters", "File","Layers","Code"])
+    tab_parameters, tab_file_controls,tab_layer= st.tabs(["Parameters", "File","Layers",])
     
     with tab_parameters:
         model_parameters = parameter_controls()
