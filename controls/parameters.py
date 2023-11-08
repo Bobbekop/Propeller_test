@@ -3,15 +3,13 @@ import math
 
 def parameter_controls():
 
-    propeller_diameter_mm= 152.4
-    
     tab1, tab2, tab3 = st.tabs(["Propeller","Hub","Blade"])
 
     #PROPELLER PARAMETERS
     with tab1:
         num_of_blades=st.number_input("Number of Blades",min_value=1, value = 2, max_value= 12)
-        propeller_diameter_inch=st.number_input("Propeller Diameter(Inch)",min_value=2, value=(propeller_diameter_mm/25.4),max_value=15)
-        propeller_diameter_mm=st.number_input("Propeller Diameter(mm)",min_value=50.0, value=152.4,max_value=(propeller_diameter_inch*25.4),step=0.1,format="%.1f")
+        propeller_diameter_inch=st.number_input("Propeller Diameter(Inch)",min_value=2, value=6,max_value=15)
+        propeller_diameter_mm=st.number_input("Propeller Diameter(mm)",min_value=50.0, value=(propeller_diameter_inch*25.4),max_value=350,step=0.1,format="%.1f")
         pitch_inch=st.number_input("Pitch(Inch)",min_value=0,value=4,max_value=10)
         chord_scale=st.number_input("Chord Scale",min_value=0.01,value=0.15,max_value=0.25,step=0.01,format="%.2f")
         tip_size=st.number_input("Tip Size",min_value=0.01,value=5.0,max_value=15.0,step=0.1,format="%.1f")   
