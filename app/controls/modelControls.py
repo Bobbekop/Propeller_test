@@ -57,7 +57,6 @@ def model_controls(parameters,color,render,file_controls):
         model = generate_model(parameters)
 
         cq.exporters.export(model,f'{EXPORT_NAME}.{export_type}')
-        cq.exporters.export(model,'app/static/'+f'{EXPORT_NAME}_{session_id}.stl')
         
         end = time.time()
 
