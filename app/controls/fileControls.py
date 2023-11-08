@@ -1,7 +1,6 @@
 import streamlit as st
 
 def file_controls():
-    
     col1, col2 = st.columns(2)
     
     with col1:

@@ -8,45 +8,64 @@ from controls import (
     sidebar, 
     parameter_controls, 
     model_controls,
-    file_controls,
-    camera_controls
+    file_controls
 )
 
-def ui():
-
-    camera_control=camera_controls()
+def make_tabs():
+    tab_parameters, tab_file_controls = st.tabs(["Parameters", "File"])
     
-    tab1, tab2 = st.tabs(["Parameters", "File"])
-    with tab1:
-        col1, col2, col3 = st.columns(3)
+    with tab_parameters:
         model_parameters = parameter_controls()
-    with tab2:
-        file_control = file_controls()
+    with tab_file_controls:
+        file_controls = file_controls()
 
-    col1, col2, col3= st.columns(3)
+    return model_parameters, file_controls
+
+def initialize_session():
+    if 'models' not in st.session_state:
+        st.session_state['models'] = []
+
+    if "session_id" not in st.session_state:
+        st.session_state['session_id'] = uuid4()
+
+def model_controls(model_parameters, file_controls):
+    col1, col2, col3 = st.columns(3)
     with col1:
-        render = st.checkbox('Render:', False)
+        generate_button = st.button('Generate Model')
     with col2:
-        color1 = st.color_picker('Primary Color', '#00f900', disabled=not render)
+        color1 = st.color_picker('Model Color', '#E06600', label_visibility="collapsed")
     with col3:
-        color2 = st.color_picker('Secondary Color', '#0011f9', disabled=not render)
+        render = st.selectbox("Render", ["material", "wireframe"], label_visibility="collapsed")
 
-    if render:
-        model_controls(
-            model_parameters, 
-            camera_control, 
-            color1, 
-            color2, 
-            file_control
-        )
+    make_model_controls(
+        model_parameters,
+        color1,
+        render,
+        file_controls
+    )
 
+def make_app():
+    model_parameters, file_controls = make_tabs()
+    st.divider()
+    model_controls(model_parameters, file_controls)
+
+def clean_up_static_files():
+    files = glob.glob("app/static/model_*.stl")
+    today = datetime.today()
+    for file_name in files:
+        file_path = Path(file_name)
+        modified = file_path.stat().st_mtime
+        modified_date = datetime.fromtimestamp(modified)
+        delta = today - modified_date
+        if delta.total_seconds() > 1200:
+            file_path.unlink()
 
 if __name__ == "__main__":
     st.set_page_config(
         page_title="Propeller Test",
         page_icon="🛬"
     )
-
-    st.title('Propeller Test')
-    ui()
-    sidebar()
+    initialize_session()
+    make_app()
+    make_sidebar()
+    clean_up_static_files()
