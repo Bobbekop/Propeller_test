@@ -1,10 +1,6 @@
 import streamlit as st
 import cadquery as cq
 import math
-import tkinter as tk
-from tkinter import filedialog
-
-global_airfoil_file = None
 
 def generate_hub(parameters):
     hub_wp = (cq.Workplane("XY")
