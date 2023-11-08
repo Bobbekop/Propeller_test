@@ -24,8 +24,10 @@ def make_tabs():
         add_button, dupe = parameter_controls_layers()    
     with tab_code:
         code_view(model_parameters, st.session_state['models'])
-        
-    return add_button, model_parameters, ui_file_controls
+
+    parameters = model_parameters | dupe
+    
+    return add_button, parameters, ui_file_controls
 
 def initialize_session():
     if 'models' not in st.session_state:
