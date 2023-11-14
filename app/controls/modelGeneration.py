@@ -180,7 +180,7 @@ def generate_blade(parameters):
     blade = cq.Solid.makeSolid(shell)
     
     blade_wp = cq.Workplane("XY").add(blade)
-    extrusion_depth = -((parameters['hub_diam']/2)-(parameters['hub_hole_diam']/2))
+    extrusion_depth = -((parameters['hub_diam']/2)-(parameters['hub_hole_diam']/2)-(parameters['hub_hole_chamf_diam']/2))
     base_wire = blade_wp.faces("<Z").wires().vals()[0]
     extrusion = (cq.Workplane("XY")
              .add(base_wire)
