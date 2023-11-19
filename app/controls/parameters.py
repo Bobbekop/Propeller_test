@@ -10,7 +10,7 @@ def parameter_controls():
         num_of_blades=st.number_input("Number of Blades",min_value=1, value = 2, max_value= 12)
         propeller_diameter_inch=st.number_input("Propeller Diameter(Inch)",min_value=2.0, value=6.0,max_value=15.0,step=0.1,format="%.1f")
         #propeller_diameter_mm=st.number_input("Propeller Diameter(mm)",min_value=50.0, value=152.4,max_value=381,step=0.1,format="%.1f")
-        pitch_inch=st.number_input("Pitch(Inch)",min_value=0.0,value=4.0,max_value=10.0, step=0.1,format=".1f")
+        pitch_inch=st.number_input("Pitch(Inch)",min_value=0.0,value=4.0,max_value=10.0, step=0.1,format="%.1f")
         #angle_of_attack_deg = st.number_input("Propeller Angle of attack",min_value=0.0,value=7.7,max_value=89.9,step=0.1,format="%.1f")
         chord_scale=st.number_input("Chord Scale",min_value=0.01,value=0.15,max_value=0.25,step=0.01,format="%.2f")
         tip_size=st.number_input("Tip Size",min_value=0.01,value=0.01,max_value=15.0,step=0.1,format="%.1f")   
