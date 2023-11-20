@@ -3,24 +3,37 @@ import cadquery as cq
 import math
 
 def generate_hub(parameters):
-    hub_wp = (cq.Workplane("XY")
-        .cylinder(
-            parameters['hub_height'],
-            parameters['hub_diam']/2)
+    hub_wp= (cq.Workplane("XY")
+        .box(
+            parameters['hub_diam'],
+            parameters['hub_diam'],
+            parameters['hub_height'])
+        .edges("|Z")
+        .fillet(
+            parameters['hub_diam']/3)
         .faces(">Z")
-        .hole(
-            parameters['hub_hole_diam'])
+        .circle(
+            parameters['hub_hole_diam']/2)
+        .cutBlind(
+            -parameters['hub_height'])
         .faces(">Z")
-        .hole(parameters['hub_hole_chamf_diam'],parameters['hub_hole_up_chamf_depth'])
+        .workplane()
+        .circle(
+            parameters['hub_hole_chamf_diam']/2)
+        .cutBlind(
+            -parameters['hub_hole_up_chamf_depth'])
         .faces("<Z")
-        .circle((parameters['hub_hole_chamf_diam']/2))
-        .cutBlind(parameters['hub_hole_low_chamf_depth'])
-        .translate((0,0,parameters['hub_height']/2)))
+        .workplane()
+        .circle(
+            parameters['hub_hole_chamf_diam']/2)
+        .cutBlind(
+            -parameters['hub_hole_low_chamf_depth'])
+        .translate((0,0,parameters['hub_height']/2))
+        )
     
     return hub_wp
 
 def generate_counterweighted_hub(parameters):
-    
     hub_wp= (cq.Workplane("XY")
         .box(
             parameters['hub_diam']+parameters['counterweight_length'],
@@ -73,6 +86,7 @@ def generate_counterweighted_hub(parameters):
         .translate((
             -((parameters['hub_diam']+parameters['counterweight_length']/2)-parameters['hub_diam']),0,0))
         )
+    
     return counterweighted_hub_wp 
 
 def get_airfoil_points():
