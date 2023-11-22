@@ -147,6 +147,10 @@ def elliptical_chord(r, parameters):
     chord = (parameters['propeller_diameter'] * parameters['chord_scale']) * math.sqrt(1 - (r / (parameters['propeller_diameter'] / 2))**2)
     return max(chord, parameters['tip_size'])
 
+def parabolic_chord(r,parameters):
+    chord = (parameters['chord_scale'] * parameters['propeller_diameter']) * 4 * (r/(parameters['propeller_diameter'] / 2))*(1-(r/(parameters['propeller_diameter'] / 2)))
+    return max(chord,parameters['tip_size'])
+
 def generate_blade(parameters):
     airfoil_points = get_airfoil_points()
     
@@ -174,7 +178,10 @@ def generate_blade(parameters):
     for offset in offsets:
         r = (parameters['hub_diam']/2)+offset
         twist_angle=compute_twist_angle(r,parameters)
-        chord=elliptical_chord(r,parameters)
+        if parameters['chord_profile'] == 'elliptic':
+            chord = elliptical_chord(r, parameters)
+        elif parameters['chord_profile'] == 'parabolic':
+            chord = parabolic_chord(r, parameters)
         scaled_airfoil_points = scale_airfoil_points(airfoil_points,chord,1,parameters['blade_thickness'])
         wp=(base_wp
             .workplane(offset=offset)
