@@ -52,6 +52,7 @@ def parameter_controls():
         'hub_hole_chamf_diam':hub_hole_chamf_diam,
         'hub_hole_up_chamf_depth':hub_hole_up_chamf_depth,
         'hub_hole_low_chamf_depth':hub_hole_low_chamf_depth,
+        'chord_profile':chord_profile,
         'root_length':root_length,
         'num_of_sections':num_of_sections,
         'blade_thickness':blade_thickness,
