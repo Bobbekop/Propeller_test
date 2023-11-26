@@ -37,13 +37,13 @@ def parameter_controls():
         num_of_sections=st.number_input("Number of Sections",min_value=1,value=10,max_value=50)
         blade_thickness=st.number_input("Blade Thickness Scale",min_value=0.1,value=1.0,max_value=5.0,step=0.1,format="%.1f")
         
-    propeller_diameter_mm = propeller_diameter_inch*25.4
-    angle_of_attack_deg = math.degrees(math.atan(pitch_inch / (math.pi * propeller_diameter_inch)))
+    #propeller_diameter_mm = propeller_diameter_inch*25.4
+    #angle_of_attack_deg = math.degrees(math.atan(pitch_inch / (math.pi * propeller_diameter_inch)))
 
     return{
         'num_of_blades':num_of_blades,
-        'propeller_diameter':propeller_diameter_mm,
-        'angle_of_attack':angle_of_attack_deg,
+        'propeller_diameter':propeller_diameter_inch*24.4,
+        'angle_of_attack':math.degrees(math.atan(pitch_inch / (math.pi * propeller_diameter_inch))),
         'chord_scale':chord_scale,
         'tip_size':tip_size,
         'hub_diam':hub_diam,
