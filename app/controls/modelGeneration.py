@@ -144,11 +144,11 @@ def compute_twist_angle(r, parameters):
     return parameters['angle_of_attack']+math.degrees(math.atan(2*((parameters['propeller_diameter']/2)-r)/parameters['propeller_diameter']))
 
 def elliptical_chord(r, parameters):
-    chord = (parameters['propeller_diameter'] * parameters['chord_scale']) * math.sqrt(1 - (r / (parameters['propeller_diameter'] / 2))**2)
+    chord = ((parameters['propeller_diameter'] * parameters['chord_scale']) * math.sqrt(1 - (r / (parameters['propeller_diameter'] / 2))**2))+parameters['tip_size']
     return max(chord, parameters['tip_size'])
 
 def parabolic_chord(r,parameters):
-    chord = (parameters['chord_scale'] * parameters['propeller_diameter']) * 4 * (r/(parameters['propeller_diameter'] / 2))*(1-(r/(parameters['propeller_diameter'] / 2)))
+    chord = ((parameters['chord_scale'] * parameters['propeller_diameter']) * 4 * (r/(parameters['propeller_diameter'] / 2))*(1-(r/(parameters['propeller_diameter'] / 2))))+parameters['tip_size']
     return max(chord,parameters['tip_size'])
 
 def generate_blade(parameters):
