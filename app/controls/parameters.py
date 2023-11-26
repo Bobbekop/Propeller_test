@@ -34,7 +34,7 @@ def parameter_controls():
     with blade_parameters:
         chord_profile = st.selectbox('Chord Distribution',('elliptic','parabolic')) 
         root_length=st.number_input("Root Length(mm)",min_value=0.5,value=10.0,max_value=30.0,step=0.1,format="%.1f")
-        num_of_sections=st.number_input("Number of Sections",min_value=1,value=10,max_value=50)
+        num_of_sections=st.number_input("Number of Sections",min_value=1,value=250,max_value=500)
         blade_thickness=st.number_input("Blade Thickness Scale",min_value=0.1,value=1.0,max_value=5.0,step=0.1,format="%.1f")
         
     #propeller_diameter_mm = propeller_diameter_inch*25.4
