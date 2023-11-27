@@ -143,16 +143,15 @@ def compute_blade_length(parameters):
 def twist_angle_linear(r, parameters):
     return parameters['angle_of_attack']+math.degrees(math.atan(2*((parameters['propeller_diameter']/2)-r)/parameters['propeller_diameter']))
 
-
-def elliptic_chord(r, parameters):
-    chord = ((parameters['propeller_diameter'] * parameters['chord_scale']) * math.sqrt(1 - (r / (parameters['propeller_diameter'] / 2))**2))+parameters['tip_size']
-    return max(chord, parameters['tip_size'])
-
 def twist_angle_exponential(r,parameters):
     blade_length = (parameters['propeller_diameter'] / 2) - (parameters['root_length']*2) - (parameters['hub_diam'] / 2)
     decrease_factor = 2
     twist_angle = (90 - parameters['angle_of_attack']) * math.exp(-decrease_factor * (r / blade_length)) + parameters['angle_of_attack']
     return twist_angle
+
+def elliptic_chord(r, parameters):
+    chord = ((parameters['propeller_diameter'] * parameters['chord_scale']) * math.sqrt(1 - (r / (parameters['propeller_diameter'] / 2))**2))+parameters['tip_size']
+    return max(chord, parameters['tip_size'])
 
 def parabolic_chord(r,parameters):
     blade_length = parameters['propeller_diameter'] / 2
