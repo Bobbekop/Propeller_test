@@ -11,9 +11,7 @@ def parameter_controls():
         propeller_diameter_inch=st.number_input("Propeller Diameter(Inch)",min_value=2.0, value=6.0,max_value=15.0,step=0.1,format="%.1f")
         #propeller_diameter_mm=st.number_input("Propeller Diameter(mm)",min_value=50.0, value=152.4,max_value=381,step=0.1,format="%.1f")
         pitch_inch=st.number_input("Pitch(Inch)",min_value=0.0,value=4.0,max_value=10.0, step=0.1,format="%.1f")
-        #angle_of_attack_deg = st.number_input("Propeller Angle of attack",min_value=0.0,value=7.7,max_value=89.9,step=0.1,format="%.1f")
-        chord_scale=st.number_input("Chord Scale",min_value=0.01,value=0.15,max_value=0.25,step=0.01,format="%.2f")
-        tip_size=st.number_input("Tip Size",min_value=0.01,value=10.0,max_value=20.0,step=0.1,format="%.1f")   
+        #angle_of_attack_deg = st.number_input("Propeller Angle of attack",min_value=0.0,value=7.7,max_value=89.9,step=0.1,format="%.1f")  
 
     with hub_and_counterweight_parameters:
        col1,col2,col3 = st.columns(3)
@@ -32,14 +30,19 @@ def parameter_controls():
            bolt_top_width_mm=st.number_input("Bolt Top Width(mm)",min_value=3.0,value=7.9,max_value=10.0,step=0.1,format="%.1f")
 
     with blade_parameters:
-        #chord_profile = st.selectbox('Chord Distribution',('parabolic')) 
-        root_length=st.number_input("Root Length(mm)",min_value=0.5,value=10.0,max_value=30.0,step=0.1,format="%.1f")
+        chord_profile = st.selectbox('Chord Distribution',('parabolic','parabolic'))
+        twist_profile = st.selectbox('Twist Profile',('exponential','linear'))
         num_of_sections=st.number_input("Number of Sections",min_value=1,value=250,max_value=500)
         blade_thickness=st.number_input("Blade Thickness Scale",min_value=0.1,value=1.0,max_value=5.0,step=0.1,format="%.1f")
+        chord_scale=st.number_input("Chord Scale",min_value=0.01,value=0.15,max_value=0.25,step=0.01,format="%.2f")
+        
+        tip_size=st.number_input("Tip Size",min_value=0.01,value=10.0,max_value=20.0,step=0.1,format="%.1f")
+        root_length=st.number_input("Root Length(mm)",min_value=0.5,value=10.0,max_value=30.0,step=0.1,format="%.1f")
         
     #propeller_diameter_mm = propeller_diameter_inch*25.4
     #angle_of_attack_deg = math.degrees(math.atan(pitch_inch / (math.pi * propeller_diameter_inch)))
-    chord_profile = 'parabolic'
+    #chord_profile = 'parabolic'
+    #twist_profile = 'exponential'
     
     return{
         'num_of_blades':num_of_blades,
@@ -57,6 +60,7 @@ def parameter_controls():
         'root_length':root_length,
         'num_of_sections':num_of_sections,
         'blade_thickness':blade_thickness,
+        'twist_profile':twist_profile,
         'counterweight_length':counterweight_length,
         'bolt_mm':bolt_mm,
         'bolt_top_mm':bolt_top_mm,
