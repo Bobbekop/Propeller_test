@@ -32,7 +32,7 @@ def parameter_controls():
            bolt_top_width_mm=st.number_input("Bolt Top Width(mm)",min_value=3.0,value=7.9,max_value=10.0,step=0.1,format="%.1f")
 
     with blade_parameters:
-        chord_profile = st.selectbox('Chord Distribution',('elliptic','parabolic')) 
+        chord_profile = st.selectbox('Chord Distribution',('parabolic','elliptic')) 
         root_length=st.number_input("Root Length(mm)",min_value=0.5,value=10.0,max_value=30.0,step=0.1,format="%.1f")
         num_of_sections=st.number_input("Number of Sections",min_value=1,value=250,max_value=500)
         blade_thickness=st.number_input("Blade Thickness Scale",min_value=0.1,value=1.0,max_value=5.0,step=0.1,format="%.1f")
