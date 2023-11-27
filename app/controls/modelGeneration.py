@@ -154,7 +154,7 @@ def parabolic_chord_old(r,parameters):
 def parabolic_chord(r,parameters):
     blade_length = parameters['propeller_diameter'] / 2
     max_chord = (parameters['chord_scale'] * parameters['propeller_diameter'])
-    chord = max(min((parameters['tip_size'] - max_chord) / ((blade_length - (blade_length / 2))**2) * (r - (blade_length / 2))**2 + max_chord), max_chord), 0)
+    chord = max(min(((parameters['tip_size'] - max_chord) / ((blade_length - (blade_length / 2))**2) * (r - (blade_length / 2))**2 + max_chord), max_chord), 0)
     if r == blade_length:
         chord = max(chord, parameters['tip_size'])
     return chord
