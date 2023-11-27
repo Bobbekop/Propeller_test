@@ -39,7 +39,8 @@ def parameter_controls():
         
     #propeller_diameter_mm = propeller_diameter_inch*25.4
     #angle_of_attack_deg = math.degrees(math.atan(pitch_inch / (math.pi * propeller_diameter_inch)))
-
+    chord_profile = 'parabolic'
+    
     return{
         'num_of_blades':num_of_blades,
         'propeller_diameter':propeller_diameter_inch*24.4,
