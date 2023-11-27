@@ -147,10 +147,6 @@ def elliptic_chord(r, parameters):
     chord = ((parameters['propeller_diameter'] * parameters['chord_scale']) * math.sqrt(1 - (r / (parameters['propeller_diameter'] / 2))**2))+parameters['tip_size']
     return max(chord, parameters['tip_size'])
 
-def parabolic_chord_old(r,parameters):
-    chord = ((parameters['chord_scale'] * parameters['propeller_diameter']) * 4 * (r/(parameters['propeller_diameter'] / 2))*(1-(r/(parameters['propeller_diameter'] / 2))))+parameters['tip_size']
-    return max(chord,parameters['tip_size'])
-
 def parabolic_chord(r,parameters):
     blade_length = parameters['propeller_diameter'] / 2
     max_chord = (parameters['chord_scale'] * parameters['propeller_diameter'])
