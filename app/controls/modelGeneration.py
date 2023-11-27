@@ -182,10 +182,10 @@ def generate_blade(parameters):
     for offset in offsets:
         r = (parameters['hub_diam']/2)+offset
         twist_angle=compute_twist_angle(r,parameters)
-        if parameters['chord_profile'] == 'elliptic':
-            chord = elliptic_chord(r, parameters)
-        elif parameters['chord_profile'] == 'parabolic':
-            chord = parabolic_chord(r, parameters)
+        #if parameters['chord_profile'] == 'elliptic':
+            #chord = elliptic_chord(r, parameters)
+        #elif parameters['chord_profile'] == 'parabolic':
+        chord = parabolic_chord(r, parameters)
         scaled_airfoil_points = scale_airfoil_points(airfoil_points,chord,1,parameters['blade_thickness'])
         wp=(base_wp
             .workplane(offset=offset)
