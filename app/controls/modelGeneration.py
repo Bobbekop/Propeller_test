@@ -2,8 +2,8 @@ import streamlit as st
 import cadquery as cq
 import math
 
-def generate_hub(parameters):
-    hub_wp= (cq.Workplane("XY")
+def generate_hub_double(parameters):
+    hub_double_wp = (cq.Workplane("XY")
         .box(
             parameters['hub_diam'],
             parameters['hub_diam'],
@@ -30,8 +30,26 @@ def generate_hub(parameters):
             -parameters['hub_hole_low_chamf_depth'])
         .translate((0,0,parameters['hub_height']/2))
         )
-    
-    return hub_wp
+    return hub_double_wp
+
+def generate_hub_multi(parameters):
+    hub_multi_wp = (cq.Workplane("XY")
+        .cylinder(
+            parameters['hub_height'],
+            parameters['hub_diam']/2)
+        .faces(">Z")
+        .hole(
+            parameters['hub_hole_diam'])
+        .faces(">Z")
+        .hole(
+            parameters['hub_hole_chamf_diam'],
+            parameters['hub_hole_up_chamf_depth'])
+        .faces("<Z")
+        .circle((parameters['hub_hole_chamf_diam']/2))
+        .cutBlind(parameters['hub_hole_low_chamf_depth'])
+        .translate((0,0,parameters['hub_height']/2))
+        )
+    return hub_multi_wp
 
 def generate_counterweighted_hub(parameters):
     hub_wp= (cq.Workplane("XY")
@@ -63,7 +81,6 @@ def generate_counterweighted_hub(parameters):
         .cutBlind(
             -parameters['hub_hole_low_chamf_depth'])
         )
-    
     counterweighted_hub_wp = (hub_wp
         .faces(">Z")
         .center(
@@ -80,13 +97,11 @@ def generate_counterweighted_hub(parameters):
         .cutBlind(
             -parameters['bolt_top_mm'])
         )
-    
     counterweighted_hub_wp = (cq.Workplane("XY")
         .add(counterweighted_hub_wp)
         .translate((
             -((parameters['hub_diam']+parameters['counterweight_length']/2)-parameters['hub_diam']),0,0))
         )
-    
     return counterweighted_hub_wp 
 
 def get_airfoil_points():
@@ -196,7 +211,7 @@ def generate_blade(parameters):
             twist_angle = twist_angle_linear(r, parameters)
         elif parameters['twist_profile'] == 'exponential':
             twist_angle = twist_angle_exponential(r,parameters)
-
+            
         if parameters['chord_profile'] == 'elliptic':
             chord = elliptic_chord(r, parameters)
         elif parameters['chord_profile'] == 'parabolic':
@@ -228,16 +243,18 @@ def generate_blade(parameters):
              .toPending()
              .extrude(extrusion_depth))
     blade_wp  = blade_wp.union(extrusion)
-    
     return blade_wp
 
 def generate_propeller(parameters):
     if parameters['num_of_blades'] == 1:
         counterweighted_hub_wp=generate_counterweighted_hub(parameters)
         propeller = cq.Workplane("XY").add(counterweighted_hub_wp)
+    elif parameters['num_of_blades'] == 2:
+        hub_double_wp=generate_hub_double(parameters)
+        propeller = cq.Workplane("XY").add(hub_double_wp)
     else:
-        hub_wp=generate_hub(parameters)
-        propeller = cq.Workplane("XY").add(hub_wp)
+        hub_multi_wp=generate_hub_multi(parameters)
+        propeller = cq.Workplane("XY").add(hub_multi_wp)
 
     blade_wp = generate_blade(parameters)
     hub_radius = parameters['hub_diam']/2
@@ -253,7 +270,5 @@ def generate_propeller(parameters):
                  .rotate((0, 0, 0), (1, 0, 0), 90)
                  .rotate((0, 0, 0), (0, 0, 1), angle)
                  .translate((x_pos,y_pos,parameters['hub_height']/2)))
-        
         propeller = propeller.union(blade)
-    
     return propeller
