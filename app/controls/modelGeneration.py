@@ -140,12 +140,19 @@ def scale_airfoil_points(airfoil_points,chord, scale_x, scale_y):
 def compute_blade_length(parameters):
     return (parameters['propeller_diameter'] / 2) - (parameters['root_length']) - (parameters['hub_diam'] / 2)
 
-def compute_twist_angle(r, parameters):
+def twist_angle_linear(r, parameters):
     return parameters['angle_of_attack']+math.degrees(math.atan(2*((parameters['propeller_diameter']/2)-r)/parameters['propeller_diameter']))
+
 
 def elliptic_chord(r, parameters):
     chord = ((parameters['propeller_diameter'] * parameters['chord_scale']) * math.sqrt(1 - (r / (parameters['propeller_diameter'] / 2))**2))+parameters['tip_size']
     return max(chord, parameters['tip_size'])
+
+def twist_angle_exponential(r,parameters):
+    blade_length = (parameters['propeller_diameter'] / 2) - (parameters['root_length']*2) - (parameters['hub_diam'] / 2)
+    decrease_factor = 2
+    twist_angle = (90 - parameters['angle_of_attack']) * math.exp(-decrease_factor * (r / blade_length)) + parameters['angle_of_attack']
+    return twist_angle
 
 def parabolic_chord(r,parameters):
     blade_length = parameters['propeller_diameter'] / 2
@@ -168,11 +175,15 @@ def generate_blade(parameters):
     airfoil_splines = {}
     
     r = (parameters['hub_diam']/2)
-    twist_angle=compute_twist_angle(r,parameters)
+    if parameters['twist_profile'] == 'linear':
+        twist_angle = twist_angle_linear(r, parameters)
+    elif parameters['twist_profile'] == 'exponential':
+        twist_angle = twist_angle_exponential(r,parameters) 
+
     airfoil_splines["airfoil_points_{}".format(0)]=(base_wp
         .workplane(offset=0)
         .transformed(rotate=(0,0,twist_angle))
-        .spline(scale_airfoil_points(airfoil_points,1.5*parameters['hub_height'],0.75,5))
+        .spline(scale_airfoil_points(airfoil_points,1.5*parameters['hub_height'],0.6,6))
         .close()
         .wire()
         .val())
@@ -181,11 +192,17 @@ def generate_blade(parameters):
 
     for offset in offsets:
         r = (parameters['hub_diam']/2)+offset
-        twist_angle=compute_twist_angle(r,parameters)
+
+        if parameters['twist_profile'] == 'linear':
+            twist_angle = twist_angle_linear(r, parameters)
+        elif parameters['twist_profile'] == 'exponential':
+            twist_angle = twist_angle_exponential(r,parameters)
+
         if parameters['chord_profile'] == 'elliptic':
             chord = elliptic_chord(r, parameters)
         elif parameters['chord_profile'] == 'parabolic':
-            chord = parabolic_chord(r, parameters)
+            chord = parabolic_chord(r,parameters)
+    
         scaled_airfoil_points = scale_airfoil_points(airfoil_points,chord,1,parameters['blade_thickness'])
         wp=(base_wp
             .workplane(offset=offset)
