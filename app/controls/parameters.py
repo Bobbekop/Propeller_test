@@ -33,7 +33,7 @@ def parameter_controls():
         chord_profile = st.selectbox('Chord Distribution',('parabolic','parabolic'))
         twist_profile = st.selectbox('Twist Profile',('exponential','linear'))
         num_of_sections=st.number_input("Number of Sections",min_value=1,value=250,max_value=500)
-        blade_thickness=st.number_input("Blade Thickness Scale",min_value=0.1,value=1.0,max_value=5.0,step=0.1,format="%.1f")
+        blade_thickness=st.number_input("Blade Thickness Scale",min_value=0.1,value=1.1,max_value=5.0,step=0.1,format="%.1f")
         chord_scale=st.number_input("Chord Scale",min_value=0.01,value=0.15,max_value=0.25,step=0.01,format="%.2f")
         
         tip_size=st.number_input("Tip Size",min_value=0.01,value=7.0,max_value=20.0,step=0.1,format="%.1f")
