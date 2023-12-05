@@ -117,7 +117,7 @@ def get_airfoil_points():
     
     #log(airfoil_points)
     """
-    airfoil_points= [(1.0, 0.0016), (0.95, 0.0134), (0.9, 0.0245), (0.8, 0.0441), (0.7, 0.061), (0.6, 0.075), (0.5, 0.0857), (0.4, 0.0925), (0.3, 0.0938), (0.25, 0.0917), (0.2, 0.087), (0.15, 0.0797), (0.1, 0.0683), (0.075, 0.0606), (0.05, 0.0507), (0.025, 0.0371), (0.0125, 0.0271), (0.0, 0.0), (0.0125, -0.0206), (0.025, -0.0286), (0.05, -0.0384), (0.075, -0.0447), (0.1, -0.049), (0.15, -0.0542), (0.2, -0.0566), (0.25, -0.057), (0.3, -0.0562), (0.4, -0.0525), (0.5, -0.0467), (0.6, -0.039), (0.7, -0.0305), (0.8, -0.0215), (0.9, -0.0117), (0.95, -0.0068), (1.0, -0.0016)]
+    airfoil_points= [(1.0, 0.00), (0.95, 0.0134), (0.9, 0.0245), (0.8, 0.0441), (0.7, 0.061), (0.6, 0.075), (0.5, 0.0857), (0.4, 0.0925), (0.3, 0.0938), (0.25, 0.0917), (0.2, 0.087), (0.15, 0.0797), (0.1, 0.0683), (0.075, 0.0606), (0.05, 0.0507), (0.025, 0.0371), (0.0125, 0.0271), (0.0, 0.0), (0.0125, -0.0206), (0.025, -0.0286), (0.05, -0.0384), (0.075, -0.0447), (0.1, -0.049), (0.15, -0.0542), (0.2, -0.0566), (0.25, -0.057), (0.3, -0.0562), (0.4, -0.0525), (0.5, -0.0467), (0.6, -0.039), (0.7, -0.0305), (0.8, -0.0215), (0.9, -0.0117), (0.95, -0.0068), (1.0, -0.00)]
     
     return airfoil_points
 
@@ -132,9 +132,6 @@ def scale_airfoil_points(airfoil_points,chord, scale_x, scale_y):
     scaled_airfoil_points =[(x,-y)for x,y in scaled_points]
     
     return scaled_airfoil_points
-
-def compute_blade_length(parameters):
-    return (parameters['propeller_diameter'] / 2) - (parameters['root_length']) - (parameters['hub_diam'] / 2)
 
 def twist_angle_linear(r, parameters):
     return parameters['angle_of_attack']+math.degrees(math.atan(2*((parameters['propeller_diameter']/2)-r)/parameters['propeller_diameter']))
@@ -159,30 +156,24 @@ def parabolic_chord(r,parameters):
 
 def generate_blade(parameters):
     airfoil_points = get_airfoil_points()
-    
-    base_wp = cq.Workplane("XY")
-    
-    blade_length = compute_blade_length(parameters)
+    blade_length = (parameters['propeller_diameter'] / 2) - (parameters['root_length']) - (parameters['hub_diam'] / 2)
     segment_length = blade_length/parameters['num_of_sections']
-    
     offsets = ([parameters['root_length']+ i * segment_length for i in range(0, parameters['num_of_sections'] + 1)])
-    
     airfoil_splines = {}
-    
     r = (parameters['hub_diam']/2)
+    
     if parameters['twist_profile'] == 'linear':
         twist_angle = twist_angle_linear(r, parameters)
     elif parameters['twist_profile'] == 'exponential':
         twist_angle = twist_angle_exponential(r,parameters) 
 
-    airfoil_splines["airfoil_points_{}".format(0)]=(base_wp
+    airfoil_splines["airfoil_points_{}".format(0)]=(cq.Workplane("XY")
         .workplane(offset=0)
         .transformed(rotate=(0,0,twist_angle))
         .spline(scale_airfoil_points(airfoil_points,1.5*parameters['hub_height'],0.6,6))
         .close()
         .wire()
         .val())
-    
     i=1
 
     for offset in offsets:
@@ -199,7 +190,7 @@ def generate_blade(parameters):
             chord = parabolic_chord(r,parameters)
     
         scaled_airfoil_points = scale_airfoil_points(airfoil_points,chord,1,parameters['blade_thickness'])
-        wp=(base_wp
+        wp=(cq.Workplane("XY")
             .workplane(offset=offset)
             .transformed(rotate=(0,0,twist_angle))
             .spline(scaled_airfoil_points)
