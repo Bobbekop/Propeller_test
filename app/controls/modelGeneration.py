@@ -3,25 +3,36 @@ import cadquery as cq
 import math
 
 def generate_hub_multi(parameters):
+    # Set up a new workplane centered on the XY plane
     hub_multi_wp = (cq.Workplane("XY")
+        # Make a cylinder as the main body, with a height and a radius        
         .cylinder(
             parameters['hub_height'],
             parameters['hub_diam']/2)
+        # Select the top face
         .faces(">Z")
+        # Cut a hole through the cylinder along the Z-axis with a specified diameter
         .hole(
             parameters['hub_hole_diam'])
+        # Select the top face again
         .faces(">Z")
+        # Cut another hole as the top chamfer, with specified diameter and depth
         .hole(
             parameters['hub_hole_chamf_diam'],
             parameters['hub_hole_up_chamf_depth'])
+        # Select the bottom face
         .faces("<Z")
+        # Create a new workplane to center
         .workplane()
+        # Cut the bottom chamfer
         .hole(
             parameters['hub_hole_chamf_diam'],
             parameters['hub_hole_low_chamf_depth'])
+        # Translate the hub to a correct position in the 3D-space
         .translate(
             (0,0,parameters['hub_height']/2))
         )
+    # Return the hub as an object on the workplane
     return hub_multi_wp
 
 def generate_counterweighted_hub(parameters):
