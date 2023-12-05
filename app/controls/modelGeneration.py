@@ -16,18 +16,18 @@ def generate_hub_multi(parameters):
             parameters['hub_hole_diam'])
         # Select the top face again
         .faces(">Z")
-        # Cut another hole as the top chamfer, with specified diameter and depth
+        # Cut another hole as the top countersink, with specified diameter and depth
         .hole(
-            parameters['hub_hole_chamf_diam'],
-            parameters['hub_hole_up_chamf_depth'])
+            parameters['hub_hole_sink_diam'],
+            parameters['hub_hole_up_sink_depth'])
         # Select the bottom face
         .faces("<Z")
         # Create a new workplane to center
         .workplane()
-        # Cut the bottom chamfer
+        # Cut the bottom countersink
         .hole(
-            parameters['hub_hole_chamf_diam'],
-            parameters['hub_hole_low_chamf_depth'])
+            parameters['hub_hole_sink_diam'],
+            parameters['hub_hole_low_sink_depth'])
         # Translate the hub to a correct position in the 3D-space
         .translate(
             (0,0,parameters['hub_height']/2))
@@ -55,15 +55,15 @@ def generate_counterweighted_hub(parameters):
         .faces(">Z")
         .workplane()
         .circle(
-            parameters['hub_hole_chamf_diam']/2)
+            parameters['hub_hole_sink_diam']/2)
         .cutBlind(
-            -parameters['hub_hole_up_chamf_depth'])
+            -parameters['hub_hole_up_sink_depth'])
         .faces("<Z")
         .workplane()
         .circle(
-            parameters['hub_hole_chamf_diam']/2)
+            parameters['hub_hole_sink_diam']/2)
         .cutBlind(
-            -parameters['hub_hole_low_chamf_depth'])
+            -parameters['hub_hole_low_sink_depth'])
         )
     counterweighted_hub_wp = (hub_wp
         .faces(">Z")
