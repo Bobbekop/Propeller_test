@@ -3,6 +3,7 @@ import cadquery as cq
 import math
 
 def generate_hub_multi(parameters):
+    
     hub_multi_wp = (cq.Workplane("XY")
         .cylinder(
             parameters['hub_height'],
@@ -15,10 +16,12 @@ def generate_hub_multi(parameters):
             parameters['hub_hole_chamf_diam'],
             parameters['hub_hole_up_chamf_depth'])
         .faces("<Z")
-        .circle((parameters['hub_hole_chamf_diam']/2))
-        .cutBlind(parameters['hub_hole_low_chamf_depth'])
-        .translate((0,0,parameters['hub_height']/2))
-        )
+        .workplane()
+        .hole(
+            parameters['hub_hole_chamf_diam'],
+            parameters['hub_hole_low_chamf_depth'])
+        .translate((0,0,parameters['hub_height']/2)))
+    
     return hub_multi_wp
 
 def generate_counterweighted_hub(parameters):
