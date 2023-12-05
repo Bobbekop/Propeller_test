@@ -20,9 +20,9 @@ def parameter_controls():
            hub_height = st.number_input("Hub Height(mm)",min_value=3.0,value = 7.0, max_value=50.0,step=0.1,format="%.1f")
            hub_hole_diam=st.number_input("Hub Hole Diameter(mm)",min_value=1.0,value=5.0,max_value=49.0,step=0.1,format="%.1f")
        with col2:
-           hub_hole_chamf_diam=st.number_input("Hub Chamfer Diameter(mm)",min_value=0.01,value=0.01,max_value=50.0,step=0.25,format="%.2f")
-           hub_hole_up_chamf_depth=st.number_input("Hub Chamfer Upper Depth(mm)",min_value=0.01,value=0.01,max_value=50.0,step=0.25,format="%.2f")
-           hub_hole_low_chamf_depth=st.number_input("Hub Chamfer Lower Depth(mm)",min_value=0.01,value=0.01,max_value=50.0,step=0.25,format="%.2f")
+           hub_hole_sink_diam=st.number_input("Hub countersink Diameter(mm)",min_value=0.01,value=0.01,max_value=50.0,step=0.25,format="%.2f")
+           hub_hole_up_sink_depth=st.number_input("Hub countersink Upper Depth(mm)",min_value=0.01,value=0.01,max_value=50.0,step=0.25,format="%.2f")
+           hub_hole_low_sink_depth=st.number_input("Hub countersink Lower Depth(mm)",min_value=0.01,value=0.01,max_value=50.0,step=0.25,format="%.2f")
        with col3:
            counterweight_length=st.number_input("Counterweight Length(mm)", min_value=10.0,value=17.0,max_value=50.0,step=0.1,format="%.1f")
            bolt_mm=st.number_input("Bolt Size(mm)",min_value=3,value=5,max_value=8)
@@ -53,9 +53,9 @@ def parameter_controls():
         'hub_diam':hub_diam,
         'hub_height':hub_height,
         'hub_hole_diam':hub_hole_diam,
-        'hub_hole_chamf_diam':hub_hole_chamf_diam,
-        'hub_hole_up_chamf_depth':hub_hole_up_chamf_depth,
-        'hub_hole_low_chamf_depth':hub_hole_low_chamf_depth,
+        'hub_hole_sink_diam':hub_hole_sink_diam,
+        'hub_hole_up_sink_depth':hub_hole_up_sink_depth,
+        'hub_hole_low_sink_depth':hub_hole_low_sink_depth,
         'chord_profile':chord_profile,
         'root_length':root_length,
         'num_of_sections':num_of_sections,
