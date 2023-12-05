@@ -2,36 +2,6 @@ import streamlit as st
 import cadquery as cq
 import math
 
-def generate_hub_double(parameters):
-    hub_double_wp = (cq.Workplane("XY")
-        .box(
-            parameters['hub_diam'],
-            parameters['hub_diam'],
-            parameters['hub_height'])
-        .edges("|Z")
-        .fillet(
-            parameters['hub_diam']/3)
-        .faces(">Z")
-        .circle(
-            parameters['hub_hole_diam']/2)
-        .cutBlind(
-            -parameters['hub_height'])
-        .faces(">Z")
-        .workplane()
-        .circle(
-            parameters['hub_hole_chamf_diam']/2)
-        .cutBlind(
-            -parameters['hub_hole_up_chamf_depth'])
-        .faces("<Z")
-        .workplane()
-        .circle(
-            parameters['hub_hole_chamf_diam']/2)
-        .cutBlind(
-            -parameters['hub_hole_low_chamf_depth'])
-        .translate((0,0,parameters['hub_height']/2))
-        )
-    return hub_double_wp
-
 def generate_hub_multi(parameters):
     hub_multi_wp = (cq.Workplane("XY")
         .cylinder(
@@ -144,10 +114,7 @@ def scale_airfoil_points(airfoil_points,chord, scale_x, scale_y):
     
     scale_factor = chord/(2*max(abs(x)for x,_ in trans_points))
     scaled_points = [(x*scale_factor* scale_x,y*scale_factor*scale_y)for x,y in trans_points]
-    
-    #desired_center_x = 0.0
-    #desired_center_y = 0.0
-    #scaled_airfoil_points = [(x+ desired_center_x,y + desired_center_y)for x,y in scaled_points]
+
     scaled_airfoil_points =[(x,-y)for x,y in scaled_points]
     
     return scaled_airfoil_points
@@ -249,9 +216,6 @@ def generate_propeller(parameters):
     if parameters['num_of_blades'] == 1:
         counterweighted_hub_wp=generate_counterweighted_hub(parameters)
         propeller = cq.Workplane("XY").add(counterweighted_hub_wp)
-    elif parameters['num_of_blades'] == 2:
-        hub_double_wp=generate_hub_double(parameters)
-        propeller = cq.Workplane("XY").add(hub_double_wp)
     else:
         hub_multi_wp=generate_hub_multi(parameters)
         propeller = cq.Workplane("XY").add(hub_multi_wp)
