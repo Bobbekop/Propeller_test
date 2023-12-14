@@ -12,8 +12,7 @@ def generate_hub_multi(parameters):
         # Select the top face
         .faces(">Z")
         # Cut a hole through the cylinder along the Z-axis with a specified diameter
-        .hole(
-            parameters['hub_hole_diam'])
+        .hole(parameters['hub_hole_diam'])
         # Select the top face again
         .faces(">Z")
         # Cut another hole as the top countersink, with specified diameter and depth
@@ -29,64 +28,65 @@ def generate_hub_multi(parameters):
             parameters['hub_hole_sink_diam'],
             parameters['hub_hole_low_sink_depth'])
         # Translate the hub to a correct position in the 3D-space
-        .translate(
-            (0,0,parameters['hub_height']/2))
+        .translate((0,0,parameters['hub_height']/2))
         )
     # Return the hub as an object on the workplane
     return hub_multi_wp
 
 def generate_counterweighted_hub(parameters):
+    # Set up a new workplane centered on the XY plane
     hub_wp= (cq.Workplane("XY")
+        # Make a box as the main body, with a length, width and height  
         .box(
             parameters['hub_diam']+parameters['counterweight_length'],
             parameters['hub_diam'],
             parameters['hub_height'])
+        # Select the vertical edges and fillet them
         .edges("|Z")
         .fillet(
             parameters['hub_diam']/2.5)
+        # Move the box a little to the along the Z-axis
         .translate((0,0,parameters['hub_height']/2))
+        # Select the top face to make a hole for the shaft
         .faces(">Z")
-        .center(
-            ((parameters['hub_diam']+parameters['counterweight_length']/2)-parameters['hub_diam']),0)
-        .circle(
-            parameters['hub_hole_diam']/2)
-        .cutBlind(
-            parameters['hub_height'])
+        .center(((parameters['hub_diam']+parameters['counterweight_length']/2)-parameters['hub_diam']),0)
+        .circle(parameters['hub_hole_diam']/2)
+        .cutBlind(parameters['hub_height'])
+        # Make a countersink on the top face
         .faces(">Z")
         .workplane()
-        .circle(
-            parameters['hub_hole_sink_diam']/2)
-        .cutBlind(
-            -parameters['hub_hole_up_sink_depth'])
+        .circle(parameters['hub_hole_sink_diam']/2)
+        .cutBlind(-parameters['hub_hole_up_sink_depth'])
+        # Make a countersink on the bottom face
         .faces("<Z")
         .workplane()
-        .circle(
-            parameters['hub_hole_sink_diam']/2)
-        .cutBlind(
-            -parameters['hub_hole_low_sink_depth'])
+        .circle(parameters['hub_hole_sink_diam']/2)
+        .cutBlind(-parameters['hub_hole_low_sink_depth'])
         )
+
+    # Make a bolt hole through the counterweight
     counterweighted_hub_wp = (hub_wp
         .faces(">Z")
-        .center(
-            -((parameters['hub_diam']+parameters['counterweight_length']/2)-parameters['hub_diam'])*2,0)
-        .circle(
-            parameters['bolt_mm']/2)
-        .cutBlind(
-            -parameters['hub_height'])
+        .center(-((parameters['hub_diam']+parameters['counterweight_length']/2)-parameters['hub_diam'])*2,0)
+        .circle(parameters['bolt_mm']/2)
+        .cutBlind(-parameters['hub_height'])
+        # Create a square countersink on the bottom face where the bolt head will fit
         .faces("<Z")
         .workplane()
         .rect(
             parameters['bolt_top_width_mm']*1.05,
             parameters['bolt_top_width_mm']*1.05)
-        .cutBlind(
-            -parameters['bolt_top_mm'])
+        .cutBlind(-parameters['bolt_top_mm'])
         )
+
+    # Move the counterweight to it's proper position
     counterweighted_hub_wp = (cq.Workplane("XY")
         .add(counterweighted_hub_wp)
-        .translate((
-            -((parameters['hub_diam']+parameters['counterweight_length']/2)-parameters['hub_diam']),0,0))
+        .translate((-((parameters['hub_diam']+parameters['counterweight_length']/2)-parameters['hub_diam']),0,0))
         )
-    return counterweighted_hub_wp 
+
+    # Return the hub as an object on the workplane
+    return counterweighted_hub_wp  
 
 def get_airfoil_points():
     """
