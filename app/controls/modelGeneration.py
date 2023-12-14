@@ -155,18 +155,22 @@ def parabolic_chord(r,parameters):
     return chord
 
 def generate_blade(parameters):
-    airfoil_points = get_airfoil_points()
-    blade_length = (parameters['propeller_diameter'] / 2) - (parameters['root_length']) - (parameters['hub_diam'] / 2)
-    segment_length = blade_length/parameters['num_of_sections']
-    offsets = ([parameters['root_length']+ i * segment_length for i in range(0, parameters['num_of_sections'] + 1)])
+    # Set parameters
+    airfoil_points = get_airfoil_points() # Get the airfoil points, currently set to NACA2415
+    blade_length = (parameters['propeller_diameter'] / 2) - (parameters['root_length']) - (parameters['hub_diam'] / 2) # Calculate blade lenght
+    segment_length = blade_length/parameters['num_of_sections'] # Calculate length of each segment
+    offsets = ([parameters['root_length']+ i * segment_length for i in range(0, parameters['num_of_sections'] + 1)]) # Calculate offset for each section
+    # Start a list for the splines
     airfoil_splines = {}
+    # Get the twist angle at the root, depending on selected profile, more can be added
     r = (parameters['hub_diam']/2)
-    
     if parameters['twist_profile'] == 'linear':
         twist_angle = twist_angle_linear(r, parameters)
+        twist_angle_set = 'linear'
     elif parameters['twist_profile'] == 'exponential':
         twist_angle = twist_angle_exponential(r,parameters) 
-
+        twist_angle_set = 'exponential'
+    # Create the spline for the root, fitting in the hub height
     airfoil_splines["airfoil_points_{}".format(0)]=(cq.Workplane("XY")
         .workplane(offset=0)
         .transformed(rotate=(0,0,twist_angle))
@@ -175,21 +179,22 @@ def generate_blade(parameters):
         .wire()
         .val())
     i=1
-
+    # Iterate over the sections to create their splines
     for offset in offsets:
         r = (parameters['hub_diam']/2)+offset
-
-        if parameters['twist_profile'] == 'linear':
+        # Find the twist angle for the current section
+        if twist_angle_set == 'linear':
             twist_angle = twist_angle_linear(r, parameters)
-        elif parameters['twist_profile'] == 'exponential':
+        elif twist_angle_set == 'exponential':
             twist_angle = twist_angle_exponential(r,parameters)
-            
+        # Find chord length for current section
         if parameters['chord_profile'] == 'elliptic':
             chord = elliptic_chord(r, parameters)
         elif parameters['chord_profile'] == 'parabolic':
             chord = parabolic_chord(r,parameters)
-    
+        # Scale the airfoil points for the current section
         scaled_airfoil_points = scale_airfoil_points(airfoil_points,chord,1,parameters['blade_thickness'])
+        # Create the spline for the curreent section
         wp=(cq.Workplane("XY")
             .workplane(offset=offset)
             .transformed(rotate=(0,0,twist_angle))
@@ -197,24 +202,26 @@ def generate_blade(parameters):
             .close()
             .wire()
             .val())
-        
+        # Add the section spline to the list
         airfoil_splines["airfoil_points_{}".format(i)]= wp
         i = i+1
-    
+    # Create a lofted solid between all sections
     sections = list(airfoil_splines.values())
-    
     loft = cq.Solid.makeLoft(sections).Faces()
     shell = cq.Shell.makeShell(loft)
     blade = cq.Solid.makeSolid(shell)
-    
+    # Create a workplane for the blade
     blade_wp = cq.Workplane("XY").add(blade)
+    # Extrude the root a little into the hub
     extrusion_depth = -((parameters['hub_diam']/2)-max((parameters['hub_hole_diam']/2),(parameters['hub_hole_sink_diam']/2)))
     base_wire = blade_wp.faces("<Z").wires().vals()[0]
     extrusion = (cq.Workplane("XY")
              .add(base_wire)
              .toPending()
              .extrude(extrusion_depth))
+    # Add this extruded root to the main blade
     blade_wp  = blade_wp.union(extrusion)
+    # Return the blade as a workplane object
     return blade_wp
 
 def generate_propeller(parameters):
