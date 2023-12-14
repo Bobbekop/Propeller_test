@@ -225,26 +225,31 @@ def generate_blade(parameters):
     return blade_wp
 
 def generate_propeller(parameters):
+    # Choose hub type based on the number of blades
     if parameters['num_of_blades'] == 1:
         counterweighted_hub_wp=generate_counterweighted_hub(parameters)
         propeller = cq.Workplane("XY").add(counterweighted_hub_wp)
     else:
         hub_multi_wp=generate_hub_multi(parameters)
         propeller = cq.Workplane("XY").add(hub_multi_wp)
-
+    # Generate a workplane for the blade
     blade_wp = generate_blade(parameters)
     hub_radius = parameters['hub_diam']/2
-    
+    # Iterate over the number of blades and place them on the hub
     for i in range(parameters['num_of_blades']):
+        # Find the angle for each blade
         angle = i*(360/parameters['num_of_blades'])
+        # Find the position for each blade
         x_pos = (hub_radius-(hub_radius*0.0))*math.cos(math.radians(angle))
         y_pos = (hub_radius-(hub_radius*0.0))*math.sin(math.radians(angle))
-        
+        # Orient and position the blade on the hub
         blade = (blade_wp
                  .rotate((0, 0, 0), (0, 0, 1), 180)
                  .rotate((0, 0, 0), (0, 1, 0), 90)
                  .rotate((0, 0, 0), (1, 0, 0), 90)
                  .rotate((0, 0, 0), (0, 0, 1), angle)
                  .translate((x_pos,y_pos,parameters['hub_height']/2)))
+        # Add the blade to the propeller
         propeller = propeller.union(blade)
+    # Return the completed propeller
     return propeller
