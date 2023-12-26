@@ -143,8 +143,7 @@ def twist_angle_exponential(r,parameters):
     return twist_angle
 
 def elliptic_chord(r, parameters):
-    blade_length = parameters['propeller_diameter'] / 2
-    chord = ((blade_length * parameters['chord_scale']) * math.sqrt(1 - (r / (blade_length))**2))+parameters['tip_size']
+    chord = ((parameters['propeller_diameter'] * parameters['chord_scale']) * math.sqrt(1 - (r / (parameters['propeller_diameter']/2))**2))+parameters['tip_size']
     return max(chord, parameters['tip_size'])
 
 def parabolic_chord(r,parameters):
