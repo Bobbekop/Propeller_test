@@ -1,4 +1,4 @@
-iimport streamlit as st
+import streamlit as st
 import math
 
 def parameter_controls():
